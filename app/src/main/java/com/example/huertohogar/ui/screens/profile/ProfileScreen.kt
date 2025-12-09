@@ -1,0 +1,98 @@
+package com.example.huertohogar.ui.screens.profile
+
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ExitToApp
+import androidx.compose.material.icons.automirrored.filled.ListAlt
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.Divider
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.ListItem
+import androidx.compose.material3.ListItemDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.navigation.NavController
+import com.example.huertohogar.navigation.Screen
+import com.example.huertohogar.ui.components.MainScaffold
+import com.example.huertohogar.viewmodel.AuthViewModel
+
+@Composable
+fun ProfileScreen(
+    navController: NavController,
+    authViewModel: AuthViewModel // <-- usar AuthViewModel
+) {
+    MainScaffold(
+        navController = navController,
+        screen = Screen.Profile,
+        cartViewModel = null, // o pasar el CartViewModel si lo tienes
+        authViewModel = authViewModel
+    ) { padding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+        ) {
+
+            ProfileItem(
+                icon = Icons.Default.AccountCircle,
+                title = "Mis datos",
+                onClick = { navController.navigate(Screen.Settings.route) }
+            )
+            Divider()
+            ProfileItem(
+                icon = Icons.AutoMirrored.Filled.ListAlt,
+                title = "Mis pedidos",
+                onClick = { navController.navigate(Screen.Orders.route) }
+            )
+            Divider()
+            ProfileItem(
+                icon = Icons.Default.LocationOn,
+                title = "Mis direcciones",
+                onClick = { navController.navigate(Screen.Addresses.route) }
+            )
+            Divider()
+            ProfileItem(
+                icon = Icons.Default.Settings,
+                title = "Configuración de cuenta",
+                onClick = { navController.navigate(Screen.Settings.route) }
+            )
+            Divider()
+            ProfileItem(
+                icon = Icons.AutoMirrored.Filled.ExitToApp,
+                title = "Cerrar sesión",
+                onClick = { authViewModel.logout() },
+                isLogout = true
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ProfileItem(icon: ImageVector, title: String, onClick: () -> Unit, isLogout: Boolean = false) {
+
+    val colors = if (isLogout) {
+        ListItemDefaults.colors(
+            headlineColor = MaterialTheme.colorScheme.error,
+            leadingIconColor = MaterialTheme.colorScheme.error
+        )
+    } else {
+        ListItemDefaults.colors()
+    }
+
+    ListItem(
+        headlineContent = { Text(text = title) },
+        leadingContent = { Icon(imageVector = icon, contentDescription = title) },
+        modifier = Modifier.clickable(onClick = onClick),
+        colors = colors
+    )
+}
