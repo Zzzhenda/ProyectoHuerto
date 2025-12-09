@@ -17,11 +17,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext // <-- Importante: Para obtener el contexto
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
+import coil.request.ImageRequest // <-- Importante: Para construir la petición con cabeceras
 import com.example.huertohogar.R
 import com.example.huertohogar.data.model.Product
 import com.example.huertohogar.navigation.Screen
@@ -36,7 +38,7 @@ fun ProductListScreen(
     navController: NavController,
     productViewModel: ProductViewModel,
     cartViewModel: CartViewModel,
-    authViewModel: AuthViewModel // <-- agregar parámetro
+    authViewModel: AuthViewModel
 ) {
     val products by productViewModel.products.collectAsState()
     val selectedCategory by productViewModel.selectedCategory.collectAsState()
@@ -46,7 +48,7 @@ fun ProductListScreen(
         navController = navController,
         screen = Screen.Products,
         cartViewModel = cartViewModel,
-        authViewModel = authViewModel // <-- pasar aquí
+        authViewModel = authViewModel
     ) { padding ->
         Column(
             modifier = Modifier
@@ -92,9 +94,20 @@ fun ProductItem(product: Product, onAddToCart: () -> Unit) {
             verticalAlignment = Alignment.CenterVertically
         ) {
 
+            // CORRECCIÓN PARA CARGAR IMÁGENES PROTEGIDAS (Error 403)
+            val context = LocalContext.current
+
+            // Construimos una petición personalizada para Coil
+            val imageRequest = ImageRequest.Builder(context)
+                .data(product.imageUrl)
+                // Simulamos ser un navegador Chrome en Windows para evitar el bloqueo simple
+                .setHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
+                .crossfade(true)
+                .build()
+
             Image(
                 painter = rememberAsyncImagePainter(
-                    model = product.imageUrl, // <-- aquí va 'imagen', no 'imageUrl'
+                    model = imageRequest, // Usamos la request en lugar del string directo
                     error = painterResource(R.drawable.placeholder),
                     placeholder = painterResource(R.drawable.placeholder)
                 ),
