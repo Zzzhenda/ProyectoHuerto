@@ -1,4 +1,3 @@
-// AppNavigation.kt
 package com.example.huertohogar.navigation
 
 import android.app.Application
@@ -16,12 +15,13 @@ import com.example.huertohogar.ui.screens.addresses.AddressesScreen
 import com.example.huertohogar.ui.screens.cart.CartScreen
 import com.example.huertohogar.ui.screens.login.LoginScreen
 import com.example.huertohogar.ui.screens.orders.OrdersScreen
-import com.example.huertohogar.ui.screens.register.RegisterScreen
 import com.example.huertohogar.ui.screens.products.ProductListScreen
 import com.example.huertohogar.ui.screens.profile.ProfileScreen
+import com.example.huertohogar.ui.screens.register.RegisterScreen
 import com.example.huertohogar.ui.screens.settings.SettingsScreen
 import com.example.huertohogar.viewmodel.AuthViewModel
 import com.example.huertohogar.viewmodel.CartViewModel
+import com.example.huertohogar.viewmodel.CategoryViewModel
 import com.example.huertohogar.viewmodel.OrderViewModel
 import com.example.huertohogar.viewmodel.ProductViewModel
 
@@ -31,12 +31,10 @@ fun AppNavigation() {
     val context = LocalContext.current
     val application = context.applicationContext as Application
 
-    val authViewModel: AuthViewModel = viewModel(
-        factory = ViewModelProvider.AndroidViewModelFactory.getInstance(application)
-    )
-    val productViewModel: ProductViewModel = viewModel(
-        factory = ViewModelProvider.AndroidViewModelFactory.getInstance(application)
-    )
+    // ViewModels
+    val authViewModel: AuthViewModel = viewModel(factory = ViewModelProvider.AndroidViewModelFactory.getInstance(application))
+    val productViewModel: ProductViewModel = viewModel(factory = ViewModelProvider.AndroidViewModelFactory.getInstance(application))
+    val categoryViewModel: CategoryViewModel = viewModel(factory = ViewModelProvider.AndroidViewModelFactory.getInstance(application)) // <-- NUEVO
     val cartViewModel: CartViewModel = viewModel()
     val orderViewModel: OrderViewModel = viewModel()
 
@@ -58,7 +56,8 @@ fun AppNavigation() {
                 navController = navController,
                 productViewModel = productViewModel,
                 cartViewModel = cartViewModel,
-                authViewModel = authViewModel
+                authViewModel = authViewModel,
+                categoryViewModel = categoryViewModel
             )
         }
 
@@ -70,38 +69,24 @@ fun AppNavigation() {
             )
         }
 
+        // ... resto de rutas (Profile, Orders, Addresses, Settings, About) se mantienen igual ...
+
         composable(Screen.Profile.route) {
-            if (!isLoggedIn) {
-                navController.navigate(Screen.Login.route) { popUpTo(0) }
-            } else {
-                ProfileScreen(navController, authViewModel)
-            }
+            if (!isLoggedIn) navController.navigate(Screen.Login.route) { popUpTo(0) }
+            else ProfileScreen(navController, authViewModel)
         }
-
         composable(Screen.Orders.route) {
-            if (!isLoggedIn) {
-                navController.navigate(Screen.Login.route) { popUpTo(0) }
-            } else {
-                OrdersScreen(navController, orderViewModel) // authViewModel eliminado
-            }
+            if (!isLoggedIn) navController.navigate(Screen.Login.route) { popUpTo(0) }
+            else OrdersScreen(navController, orderViewModel)
         }
-
         composable(Screen.Addresses.route) {
-            if (!isLoggedIn) {
-                navController.navigate(Screen.Login.route) { popUpTo(0) }
-            } else {
-                AddressesScreen(navController) // authViewModel eliminado
-            }
+            if (!isLoggedIn) navController.navigate(Screen.Login.route) { popUpTo(0) }
+            else AddressesScreen(navController)
         }
-
         composable(Screen.Settings.route) {
-            if (!isLoggedIn) {
-                navController.navigate(Screen.Login.route) { popUpTo(0) }
-            } else {
-                SettingsScreen(navController) // authViewModel eliminado
-            }
+            if (!isLoggedIn) navController.navigate(Screen.Login.route) { popUpTo(0) }
+            else SettingsScreen(navController)
         }
-
         composable(Screen.About.route) {
             AboutScreen(navController, authViewModel)
         }

@@ -2,32 +2,30 @@ package com.example.huertohogar.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-// Paleta de colores VIBRANTE (M3)
-val VibrantGreen = Color(0xFF00897B) // Un verde azulado, moderno y primario
-val VibrantGreenContainer = Color(0xFFA9E7DF)
-val OnVibrantGreen = Color(0xFFFFFFFF)
+// --- PALETA "COSECHA VIBRANTE" ---
 
-val CitrusYellow = Color(0xFFFFA000) // Un amarillo/naranja vibrante para acentos (Secundario)
-val CitrusYellowContainer = Color(0xFFFFE082)
-val OnCitrusYellow = Color(0xFF000000)
+// Primario: Naranja Intenso (Llamativo, Energía)
+val PersimmonOrange = Color(0xFFFF6F43)
+val OnPersimmon = Color(0xFFFFFFFF)
+val PersimmonContainer = Color(0xFFFFDBCE)
+val OnPersimmonContainer = Color(0xFF380D00)
 
-val EarthyBrown = Color(0xFF5D4037) // Terciario, para texto o acentos sutiles
-val EarthyBrownContainer = Color(0xFFD7CCC8)
-val OnEarthyBrown = Color(0xFFFFFFFF)
+// Secundario: Verde Albahaca (Natural, Fresco)
+val BasilGreen = Color(0xFF4C8C4A)
+val OnBasil = Color(0xFFFFFFFF)
+val BasilContainer = Color(0xFFCEE8CD)
+val OnBasilContainer = Color(0xFF07210B)
 
-val Background = Color(0xFFFDFDFD)
-val OnBackground = Color(0xFF1B1C1B)
+// Terciario: Amarillo Girasol (Alegre, Original)
+val SunflowerYellow = Color(0xFFFFC107)
+val OnSunflower = Color(0xFF261900) // Texto oscuro para buen contraste
+val SunflowerContainer = Color(0xFFFFE082)
+val OnSunflowerContainer = Color(0xFF261900)
 
-val Surface = Color(0xFFFDFDFD)
-val OnSurface = Color(0xFF1B1C1B)
-val SurfaceVariant = Color(0xFFE0E0E0) // Color sutil para Cards o contenedores
-val OnSurfaceVariant = Color(0xFF424242)
+// Fondos: Crema Cálido (Simple, Acogedor)
+val OatCream = Color(0xFFFFFDF5) // Fondo principal (casi blanco pero cálido)
+val OatSurface = Color(0xFFFFF8E1) // Superficies de tarjetas
+val OnOat = Color(0xFF1C1B1F) // Texto principal (Gris muy oscuro, no negro puro)
 
-val Outline = Color(0xFF757575)
-
-// Colores antiguos (M2) - Los mantenemos como referencia si quieres
-val EmeraldGreen = Color(0xFF2E8B57)
-val MustardYellow = Color(0xFFFFD700)
-val LightBrown = Color(0xFF8B4513)
-val SoftWhite = Color(0xFFF7F7F7)
-val DarkGrey = Color(0xFF333333)
+val ErrorRed = Color(0xFFBA1A1A)
+val OutlineColor = Color(0xFF79747E)

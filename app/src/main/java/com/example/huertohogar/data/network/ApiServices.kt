@@ -1,27 +1,19 @@
 package com.example.huertohogar.data.network
 
 import com.example.huertohogar.data.db.ProductEntity
-import com.example.huertohogar.data.model.Category
-import com.example.huertohogar.data.model.LoginRequest
-import com.example.huertohogar.data.model.LoginResponse
-import com.example.huertohogar.data.model.StockRequest
-import com.example.huertohogar.data.model.UserDto
-
+import com.example.huertohogar.data.model.*
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.PATCH
-import retrofit2.http.POST
-import retrofit2.http.Path
-
+import retrofit2.http.*
 import java.util.concurrent.TimeUnit
 
 interface HuertoApiService {
+
+    @GET("api/categorias")
+    suspend fun getCategories(): List<Category>
 
     @GET("api/huerto/productos")
     suspend fun getProducts(): List<ProductEntity>
@@ -32,8 +24,15 @@ interface HuertoApiService {
     @GET("api/usuarios")
     suspend fun getUsers(): List<UserDto>
 
+    // --- Autenticación ---
+
     @POST("api/usuarios/login")
     suspend fun login(@Body body: LoginRequest): LoginResponse
+
+    @POST("api/usuarios")
+    suspend fun register(@Body body: RegisterRequest): Response<Void>
+
+    // --- Stock ---
 
     @PATCH("api/productos/{id}/stock")
     suspend fun updateStock(
@@ -44,13 +43,12 @@ interface HuertoApiService {
 
 object RetrofitInstance {
 
-    private const val BASE_URL =
-        "https://api-dfs2-dm-production.up.railway.app/"
+    private const val BASE_URL = "https://api-dfs2-dm-production.up.railway.app/"
 
     private val client = OkHttpClient.Builder()
-        .connectTimeout(10, TimeUnit.SECONDS)
-        .readTimeout(15, TimeUnit.SECONDS)
-        .writeTimeout(15, TimeUnit.SECONDS)
+        .connectTimeout(30, TimeUnit.SECONDS)
+        .readTimeout(30, TimeUnit.SECONDS)
+        .writeTimeout(30, TimeUnit.SECONDS)
         .addInterceptor(HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
         })
